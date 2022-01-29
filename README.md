@@ -5,7 +5,7 @@ API untuk Room Monitoring Usage
 Bagian API untuk Room Usage Monitoring (Pemantauan Pemakaian Ruangan), yang menyediakan fungsi (method) untuk berhubungan dengan database. Method API sudah di tentukan. Aplikasi dan web menggunakan API ini sehingga konsisten walau dengan programmer yang berbeda beda
 
 ## Badges
-Nothing her
+Nothing here yet
 
 
 ## License
