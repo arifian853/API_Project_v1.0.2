@@ -1,0 +1,28 @@
+{
+  "name": "api-rmu",
+  "version": "1.0.1",
+  "description": "API Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/tekad-matulatan/api-rmu.git"
+  },
+  "author": "UMRAH",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/tekad-matulatan/api-rmu/issues"
+  },
+  "homepage": "https://gitlab.com/tekad-matulatan/api-rmu#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.2",
+    "mongoose": "^6.2.0",
+    "nodemon": "^2.0.15"
+  }
+}
