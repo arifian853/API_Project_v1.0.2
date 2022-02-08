@@ -19,8 +19,8 @@ const userSchema = new mongoose.Schema({
     },
     authkey: {
         type : String,
-        required : true,
+        required:true,
     }
-})
+});
 
 module.exports = mongoose.model('User', userSchema);
