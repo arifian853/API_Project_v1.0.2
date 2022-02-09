@@ -16,10 +16,6 @@ const userSchema = new mongoose.Schema({
     level: {
         type : String,
         required : true,
-    },
-    authkey: {
-        type : String,
-        required:true,
     }
 });
 

@@ -10,16 +10,16 @@ mongoose.connect(process.env.MONGO_URL, {
 })
 
 .then(res => {
-    console.log('Database connected')
+    console.log('\x1b[36m','Database connected (MongoDB)')
 })
 
 .catch(e => {
-    console.log('Database error/not connected')
+    console.log("\x1b[31m",'Database error/not connected')
 })
 
 app.use(bodyParser.json());
 app.use('/', RouteUser);
 
 app.listen(process.env.PORT, (req,res) => {
-    console.log(`Server is live on port ${process.env.PORT}`);
+    console.log('\x1b[33m',`Server is live on port ${process.env.PORT}`);
 })

@@ -3,8 +3,8 @@ const User          = require('../models/user.model');
 const bcryptjs      = require('bcryptjs');
 const jsonwebtoken  = require('jsonwebtoken');
 
-exports.DaftarUser = async (req,res) => {
-    const {userID, username, pwd, level, authkey} = req.body
+exports.RegisterUser = async (req,res) => {
+    const {userID, username, pwd, level} = req.body
 
     const HashPassword = await bcryptjs.hash(pwd, 10); 
 
@@ -13,18 +13,36 @@ exports.DaftarUser = async (req,res) => {
         username : username,
         pwd : HashPassword,
         level : level,
-        authkey : authkey
     })
 
     user.save();
 
     return res.status(201).json({
-        message:'Account Created',
+        message:'User Account Created',
+    })
+}
+
+exports.RegisterAdmin = async (req,res) => {
+    const {userID, username, pwd, level} = req.body
+
+    const HashPassword = await bcryptjs.hash(pwd, 10); 
+
+    const user = new User({
+        userID : userID,
+        username : username,
+        pwd : HashPassword,
+        level : level,
+    })
+
+    user.save();
+
+    return res.status(201).json({
+        message:'Admin Account Created',
     })
 }
 
 exports.LoginUser = async (req,res) => {
-    const {userID, username, pwd, level, authkey } = req.body
+    const {userID, username, pwd, level } = req.body
     const datauser = await User.findOne({username:username})
     console.log(datauser)
     if(datauser) {
@@ -42,7 +60,39 @@ exports.LoginUser = async (req,res) => {
             })
         }else {
             return res.status(404).json({
-                message: `Login Failed, Password wrong`,
+                message: `Login Failed, Password not match with Username`,
+            })
+        }
+    }else {
+        return res.status(404).json({
+            message: `Login Failed, Username doesn't exist`,
+        })
+    }
+}
+
+exports.LoginAdmin = async (req,res) => {
+    const {userID, username, pwd, level } = req.body
+    const dataAdmin = await User.findOne({username:username})
+    console.log(dataAdmin)
+    if(dataAdmin) {
+        const passwordUser = await bcryptjs.compare(pwd, dataAdmin.pwd)
+        if(passwordUser) {
+            const data = {
+                id : dataAdmin._id
+            }
+            const infoToken = 'Token available for login and will changed after logout';
+            const token = await jsonwebtoken.sign(data, process.env.JSWT_SECRET_ADMIN) 
+            return res.status(200).json({
+                message: `Login Success, Welcome Admin ${username}`,
+                userID : `You are : ${userID}`,
+                level : `Your Level is : ${level}`,
+                token : token,
+                infoToken : infoToken
+                
+            })
+        }else {
+            return res.status(404).json({
+                message: `Login Failed, Password not match with Username`,
             })
         }
     }else {
