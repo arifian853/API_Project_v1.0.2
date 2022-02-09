@@ -60,7 +60,7 @@ exports.LoginUser = async (req,res) => {
             })
         }else {
             return res.status(404).json({
-                message: `Login Failed, Password not match with Username`,
+                message: `Login Failed, Password not match with Username`
             })
         }
     }else {
@@ -75,12 +75,12 @@ exports.LoginAdmin = async (req,res) => {
     const dataAdmin = await User.findOne({username:username})
     console.log(dataAdmin)
     if(dataAdmin) {
-        const passwordUser = await bcryptjs.compare(pwd, dataAdmin.pwd)
-        if(passwordUser) {
+        const passwordAdmin = await bcryptjs.compare(pwd, dataAdmin.pwd)
+        if(passwordAdmin) {
             const data = {
                 id : dataAdmin._id
             }
-            const infoToken = 'Token available for login and will changed after logout';
+            const infoToken = 'Token only available for this session and will changed after logout';
             const token = await jsonwebtoken.sign(data, process.env.JSWT_SECRET_ADMIN) 
             return res.status(200).json({
                 message: `Login Success, Welcome Admin ${username}`,
