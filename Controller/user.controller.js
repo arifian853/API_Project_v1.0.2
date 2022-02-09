@@ -27,7 +27,6 @@ exports.LoginUser = async (req,res) => {
     const {userID, username, pwd, level, authkey } = req.body
     const datauser = await User.findOne({username:username})
     console.log(datauser)
-    const HashPasswordLogin = await bcryptjs.hash(pwd, 10); 
     if(datauser) {
         const passwordUser = await bcryptjs.compare(pwd, datauser.pwd)
         if(passwordUser) {
