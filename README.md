@@ -5,7 +5,9 @@ API untuk Room Monitoring Usage
 Bagian API untuk Room Usage Monitoring (Pemantauan Pemakaian Ruangan), yang menyediakan fungsi (method) untuk berhubungan dengan database. Method API sudah di tentukan. Aplikasi dan web menggunakan API ini sehingga konsisten walau dengan programmer yang berbeda beda
 
 ## Badges
-Nothing here yet
+Technologies used : 
+<img alt="JavaScript" src="https://img.shields.io/badge/-JavaScript-F7DF1E?logo=javascript&logoColor=black&style=for-the-badge">
+<img alt="Node.js" src="https://img.shields.io/badge/-Node.js-339933?logo=node.js&logoColor=black&style=for-the-badge">
 
 
 ## License
