@@ -1,31 +1,30 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
-    
-    fullName : {
+const adminSchema = new mongoose.Schema({
+    fullName_Admin : {
         type: String,
         required: true,
     },
-    studentID : {
+    adminID : {
         type: String,
         required: true,
     },
-    userID: {
+    userID_Admin: {
         type : String,
         required : true
     },
-    username: {
+    username_Admin: {
         type : String,
         required : true,
     },
-    pwd: {
+    pwd_Admin: {
         type : String,
         required : true,
     },
-    level: {
+    level_Admin: {
         type : String,
         required : true,
     }
-});
+})
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('Admin', adminSchema);

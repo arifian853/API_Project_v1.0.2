@@ -1,18 +1,21 @@
 require('dotenv').config();
 const User          = require('../models/user.model');
+const Admin         = require('../models/admin.model');
 const bcryptjs      = require('bcryptjs');
 const jsonwebtoken  = require('jsonwebtoken');
 
 exports.RegisterUser = async (req,res) => {
-    const {userID, username, pwd, level} = req.body
+    const {userID, username, pwd, level, fullName , studentID} = req.body
 
     const HashPassword = await bcryptjs.hash(pwd, 10); 
 
     const user = new User({
+        fullName : fullName,
+        studentID : studentID,
         userID : userID,
         username : username,
         pwd : HashPassword,
-        level : level,
+        level : level
     })
 
     user.save();
@@ -23,18 +26,20 @@ exports.RegisterUser = async (req,res) => {
 }
 
 exports.RegisterAdmin = async (req,res) => {
-    const {userID, username, pwd, level} = req.body
+    const {userID_Admin, username_Admin, pwd_Admin, level_Admin, fullName_Admin , adminID} = req.body
 
-    const HashPassword = await bcryptjs.hash(pwd, 10); 
+    const HashPassword = await bcryptjs.hash(pwd_Admin, 10); 
 
-    const user = new User({
-        userID : userID,
-        username : username,
-        pwd : HashPassword,
-        level : level,
+    const admin = new Admin({
+        fullName_Admin : fullName_Admin,
+        adminID : adminID,
+        userID_Admin : userID_Admin,
+        username_Admin : username_Admin,
+        pwd_Admin : HashPassword,
+        level_Admin : level_Admin,
     })
 
-    user.save();
+    admin.save();
 
     return res.status(201).json({
         message:'Admin Account Created',
@@ -42,7 +47,7 @@ exports.RegisterAdmin = async (req,res) => {
 }
 
 exports.LoginUser = async (req,res) => {
-    const {userID, username, pwd, level } = req.body
+    const {userID, username, pwd, level, fullName, studentID} = req.body
     const datauser = await User.findOne({username:username})
     console.log(datauser)
     if(datauser) {
@@ -53,7 +58,7 @@ exports.LoginUser = async (req,res) => {
             }
             const token = await jsonwebtoken.sign(data, process.env.JSWT_SECRET) 
             return res.status(200).json({
-                message: `Login Success, Welcome ${username}`,
+                message: `Login Success, Welcome ${fullName} , ${studentID}`,
                 userID : `You are : ${userID}`,
                 level : `Your Level is : ${level}`,
                 token : token
@@ -71,11 +76,11 @@ exports.LoginUser = async (req,res) => {
 }
 
 exports.LoginAdmin = async (req,res) => {
-    const {userID, username, pwd, level } = req.body
-    const dataAdmin = await User.findOne({username:username})
+    const {userID_Admin, username_Admin, pwd_Admin, level_Admin, fullName_Admin , adminID} = req.body
+    const dataAdmin = await Admin.findOne({username_Admin:username_Admin})
     console.log(dataAdmin)
     if(dataAdmin) {
-        const passwordAdmin = await bcryptjs.compare(pwd, dataAdmin.pwd)
+        const passwordAdmin = await bcryptjs.compare(pwd_Admin, dataAdmin.pwd_Admin);
         if(passwordAdmin) {
             const data = {
                 id : dataAdmin._id
@@ -83,9 +88,9 @@ exports.LoginAdmin = async (req,res) => {
             const infoToken = 'Token only available for this session and will changed after logout';
             const token = await jsonwebtoken.sign(data, process.env.JSWT_SECRET_ADMIN) 
             return res.status(200).json({
-                message: `Login Success, Welcome Admin ${username}`,
-                userID : `You are : ${userID}`,
-                level : `Your Level is : ${level}`,
+                message: `Login Success, Welcome Admin ${fullName_Admin} , ${adminID}`,
+                userID : `You are : ${userID_Admin}`,
+                level : `Your Level is : ${level_Admin}`,
                 token : token,
                 infoToken : infoToken
                 
@@ -101,4 +106,3 @@ exports.LoginAdmin = async (req,res) => {
         })
     }
 }
-
