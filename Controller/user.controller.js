@@ -3,9 +3,27 @@ const User          = require('../models/user.model');
 const Admin         = require('../models/admin.model');
 const bcryptjs      = require('bcryptjs');
 const jsonwebtoken  = require('jsonwebtoken');
+const { use } = require('../routes/user');
 
 exports.RegisterUser = async (req,res) => {
     const {userID, username, pwd, level, fullName , studentID} = req.body
+
+    const usernameUser = await User.findOne({username: username})
+    const studentIDUser = await User.findOne({studentID: studentID})
+
+    if(usernameUser) {
+        return res.status(404).json({
+            status:false,
+            message: 'Username already exists'
+        })
+    }
+
+    if(studentIDUser) {
+        return res.status(404).json({
+            status:false,
+            message: 'Student ID already exists'
+        })
+    }
 
     const HashPassword = await bcryptjs.hash(pwd, 10); 
 
@@ -27,6 +45,23 @@ exports.RegisterUser = async (req,res) => {
 
 exports.RegisterAdmin = async (req,res) => {
     const {userID_Admin, username_Admin, pwd_Admin, level_Admin, fullName_Admin , adminID} = req.body
+
+    const usernameAdmin = await Admin.findOne({username_Admin: username_Admin})
+    const findAdminID = await Admin.findOne({adminID : adminID})
+
+    if(usernameAdmin) {
+        return res.status(404).json({
+            status:false,
+            message: 'Username already exists'
+        })
+    }
+
+    if(findAdminID) {
+        return res.status(404).json({
+            status:false,
+            message: 'Student ID already exists'
+        })
+    }
 
     const HashPassword = await bcryptjs.hash(pwd_Admin, 10); 
 
@@ -65,11 +100,13 @@ exports.LoginUser = async (req,res) => {
             })
         }else {
             return res.status(404).json({
+                status:false,
                 message: `Login Failed, Password not match with Username`
             })
         }
     }else {
         return res.status(404).json({
+            status:false,
             message: `Login Failed, Username doesn't exist`,
         })
     }
@@ -97,11 +134,13 @@ exports.LoginAdmin = async (req,res) => {
             })
         }else {
             return res.status(404).json({
+                status:false,
                 message: `Login Failed, Password not match with Username`,
             })
         }
     }else {
         return res.status(404).json({
+            status:false,
             message: `Login Failed, Username doesn't exist`,
         })
     }
